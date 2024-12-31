@@ -12,6 +12,7 @@ let otp=""
 export const DeleteUserpage = () => {
   const router = useRouter();
   const [showOtpInput, setshowOtpInput] = useState(false);
+  const {dispatch}=useContext(AuthContext);
   const { generateOtp, verifyOtp } = useContext(AuthContext);
   const { checkPassword,deleteUser } = useContext(profileContext);
   const [auxUser, setAuxUser] = useState();
@@ -21,7 +22,7 @@ export const DeleteUserpage = () => {
 
   async function PasswordCheck() {
     try {
-      // console.log(checkPassword);
+      
       const user = await checkPassword(authData,{password: password });
       const status = await generateOtp(user?.user?._id);
       setAuxUser(user?.user);
@@ -34,9 +35,7 @@ export const DeleteUserpage = () => {
     }
   }
   async function deleteAccount() {
-    // console.log("hello");
     const data = await deleteUser(authData)
-    // router.push("/Auth")
   }
 
 
@@ -45,23 +44,15 @@ export const DeleteUserpage = () => {
     const data = await verifyOtp({ _id: auxUser._id, otp: otp });
     if (data?.verified) {
       setshowOtpInput(false);
-      // logOut();
-      await deleteAccount();   
+      deleteAccount();   
       dispatch({
         type:"SIGNOUT"
       });
-      router.push("/Auth")   
+      router.push("/Auth") ;
+      return(true);  
     }
     console.log(data);
   }
-
-  // async function logOut(){
-  //   try {
-     
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
 
   return (
     <>

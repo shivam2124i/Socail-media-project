@@ -91,7 +91,6 @@ function reducer(state, action) {
         localStorage.setItem("social media project", JSON.stringify(newState1));
         return newState1;
       case "SIGNIN":
-        // let newState2 = state;
         let newState2 = {
           ...state,
           token: action.payload.token,

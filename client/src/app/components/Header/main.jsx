@@ -46,6 +46,11 @@ export const Header = () => {
               router.push("/Friends")
             }}>Friends</button>
           </li>
+          <li className="nav-item">
+            <button className="nav-link active" onClick={()=>{
+              router.push("/Friends")
+            }}>Catch</button>
+          </li>
         </ul>
         <div className="d-flex justify-content-end" style={{width:"80%" }}>
          <button className="btn btn-outline-danger" onClick={()=>{

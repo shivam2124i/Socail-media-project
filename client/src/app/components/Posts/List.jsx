@@ -2,9 +2,11 @@ import { AuthContext } from "@/app/Context/AuthContext";
 import { PostsContext } from "@/app/Context/PostContext";
 import React, { useContext, useEffect } from "react";
 import Card from "./Card";
+import { useRouter } from "next/navigation";
 
 
 export const List = ({SetMode,setPostToBeEdited}) => {
+  const router = useRouter()
   const { getPosts, Posts, dispatch } = useContext(PostsContext);
   const { authData } = useContext(AuthContext);
  

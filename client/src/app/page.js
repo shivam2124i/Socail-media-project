@@ -12,12 +12,12 @@ import { useRouter } from "next/navigation";
     useEffect(()=>{
       handler(authData,router)
     },[])
-    // if(states==200){
-    //   router.push("/Posts")
-    // }
-    // else{
-    //   router.push("/Auth")
-    // }
+    if(localStorage.length==""){
+      router.push("/Auth")
+    }
+    else{
+      router.push("/Posts")
+    }
   return (
 <div>
 </div>

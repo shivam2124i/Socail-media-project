@@ -17,12 +17,16 @@ export const Signup = ({ setMode }) => {
     confirmPassword:""
   });
   console.log(formData);
-
   const ref= useRef(null);
   const router = useRouter();
+
   async function handleSubmit(){
-   if (age>=18) {
+
     try {
+      if (age<18) {
+    alert("Your Age Is Less Then 18 You Can Not Signup")
+      }
+      else{
       delete formData.confirmPassword;  
       let data=await signup(formData)
       dispatch({
@@ -30,14 +34,10 @@ export const Signup = ({ setMode }) => {
         payload:data
       })
       ref.current.reset();
-      router.push("/Posts")
+      router.push("/Posts")}
     } catch (error) {
       console.log(error);
     }
-   }
-   else{
-    alert("Your Age Is Less Then 18 You Can Not Signup")
-   }
   }
 
   return (
@@ -78,7 +78,7 @@ export const Signup = ({ setMode }) => {
                         <input
                           type="text"
                           id="lastName"
-                          className="form-control form-control-lg  "  onChange={(e)=>{
+                          className="form-control form-control-lg" onChange={(e)=>{
                             setFormData((prev)=>{return{...prev,lastname:e.target.value}})
                           }}
                         />
@@ -99,7 +99,6 @@ export const Signup = ({ setMode }) => {
                             console.log(e.target.value);
                             const date = new Date(e.target.value);
                             const today = new Date();
-                            console.log(today);
                             if (today.getDate() > date.getDate()) {
                               if (today.getMonth() >= date.getMonth()) {
                                 age = today.getFullYear() - date.getFullYear();

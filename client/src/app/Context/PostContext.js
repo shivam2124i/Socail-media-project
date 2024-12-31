@@ -3,6 +3,7 @@
 import { API } from "@/Utils/constants";
 import { createContext, useReducer } from "react";
 
+
 let Posts = [];
 
 export const PostsContext = createContext();
@@ -15,6 +16,8 @@ async function getPosts(authData) {
     });
 
     const data = await API.get("/posts/getPosts");
+    if(data.status!==200){
+    }
     return data?.data?.posts;
   } catch (error) {
     console.log(error);
@@ -71,6 +74,22 @@ async function deletePost(id) {
   }
 }
 
+async function deleteComment(authData,id,commentId) {
+  
+  try {
+    API.interceptors.request.use((req) => {
+      req.headers.authorization = `bearer ${authData.token}`;
+      return req;
+    });
+
+    const data = await API.delete(`/posts/deleteComment/?postId=${id}&commentId=${commentId}&userId=${authData.userId}`);
+    return response.status;
+
+  } catch (error) {
+    
+  }
+}
+
 async function likePosts(id,authData){
   try {
     API.interceptors.request.use((req) => {
@@ -79,6 +98,21 @@ async function likePosts(id,authData){
     });
 
     const response = await API.put(`/posts/likePost/${id}`);
+    return response.status;
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function removeLike(id,authData){
+  try {
+    API.interceptors.request.use((req) => {
+      req.headers.authorization = `bearer ${authData.token}`;
+      return req;
+    });
+
+    const response = await API.put(`/posts/removeLike/${id}`);
     return response.status;
 
   } catch (error) {
@@ -132,6 +166,8 @@ export const PostsProvider = ({ children }) => {
         getPostById,
         likePosts,
         addComment,
+        removeLike,
+        deleteComment,
       }}
     >
       {children}

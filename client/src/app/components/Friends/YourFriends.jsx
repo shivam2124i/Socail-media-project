@@ -59,7 +59,7 @@ export const YourFriends = () => {
                   >
                     <img
                       src={
-                        ele?.profilePicture?.length == 0? commonprofilePicture:ele.profilePicture 
+                        ele?.profilePicture?.length == 0? commonprofilePicture:ele?.profilePicture 
                       }
                       style={{
                         borderRadius: "50%",
@@ -68,7 +68,7 @@ export const YourFriends = () => {
                       }}
                     />
                     <h3>
-                      {ele.firstname} {ele.lastname}
+                      {ele?.firstname} {ele?.lastname}
                     </h3>
                     <button
                       className="btn btn-danger"

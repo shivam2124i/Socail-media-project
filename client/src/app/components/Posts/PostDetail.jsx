@@ -2,15 +2,17 @@ import { AuthContext } from "@/app/Context/AuthContext";
 import { PostsContext } from "@/app/Context/PostContext";
 import { useSearchParams } from "next/navigation";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import Comment from "./Comment";
 
 export const PostDetail = () => {
   const { authData } = useContext(AuthContext);
-  const { getPostById, addComment } = useContext(PostsContext);
+  const { getPostById, addComment, deleteComment } = useContext(PostsContext);
   const params = useSearchParams();
+  const [showCard, setShowCard] = useState(false);
   const [post, setPost] = useState();
   const [commentList, setCommentList] = useState();
 
-  const [comment, setComment] = useState({ text:"" });
+  const [comment, setComment] = useState({ text: "" });
   const ref = useRef();
 
   useEffect(() => {
@@ -27,6 +29,13 @@ export const PostDetail = () => {
     }
   }
 
+  async function handleCommentDelete(Comment) {
+    const data = await deleteComment(authData, params.get("id"), Comment._id);
+    // console.log(data);
+
+    fetchPost();
+  }
+
   async function handleSubmit() {
     try {
       const status = await addComment(params.get("id"), authData, comment);
@@ -34,7 +43,7 @@ export const PostDetail = () => {
 
       if (status == 200) {
         ref.current.value = "";
-        fetchPost();
+        await fetchPost();
       }
     } catch (error) {
       console.log(error);
@@ -59,7 +68,7 @@ export const PostDetail = () => {
             })}
           </strong>
           <div className="d-flex p-1 my-3">
-            <form method="post">
+            <div>
               <input
                 ref={ref}
                 type="text"
@@ -69,7 +78,7 @@ export const PostDetail = () => {
                   });
                 }}
               />{" "}
-              &nbsp; 
+              &nbsp;
               <button
                 className="btn btn-outline-success"
                 onClick={() => {
@@ -83,16 +92,20 @@ export const PostDetail = () => {
                   fill="currentColor"
                   class="bi bi-send-fill"
                   viewBox="0 0 16 16"
-                  >
+                >
                   <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z" />
-                </svg>{" "}
+                </svg>
               </button>
-                  &nbsp;
-                  &nbsp;
-            </form>
+              &nbsp;
+            </div>
             <div className="">
               {commentList?.map((ele) => {
-                return <div>{ele?.text}</div>
+                return (
+                  <Comment
+                    ele={ele}
+                    handleCommentDelete={handleCommentDelete}
+                  />
+                );
               })}
             </div>
           </div>

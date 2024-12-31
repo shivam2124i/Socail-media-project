@@ -19,6 +19,9 @@ export async function handler(authData,router){
       const status = await checkAuth(authData)
         if(status!=200 || status=="undefined"){
             router.push("/Auth")
+            // dispatch({
+            //   type:"SIGNOUT"
+            // });
         }
     } catch (error) {
       console.log(error);
